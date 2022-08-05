@@ -28,14 +28,12 @@ app.use('/getSms', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  console.log('这是最简单的中间件函数')
   next(createError(404));
 });
 
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
-  console.log('这是最简单的中间件函数2')
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
