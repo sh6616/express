@@ -25,24 +25,26 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json()); // 解析json请求
-app.use(express.urlencoded({extended: false})) // 解析URL-encoded请求
+app.use(express.urlencoded({ extended: false })) // 解析URL-encoded请求
 
 app.use('/', indexRouter);
 app.use('/getSms', usersRouter);
 //职位管理
-app.use('/department/add/', departMent);
+app.use('/department', departMent);
 
 
 
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+//应用级别全局中间件
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+//错误级中间件
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
