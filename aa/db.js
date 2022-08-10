@@ -37,8 +37,6 @@ class CustomDB {
      * @param datas
      */
     insert({table, datas}) {
-        console.log(table)
-        console.log(datas)
         return new Promise(async(resolve, reject) => {
             try {
                 let fields = ''; //字段名
