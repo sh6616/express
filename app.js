@@ -6,10 +6,15 @@ var logger = require('morgan');
 //跨域
 var cors = require("cors");
 
-var indexRouter = require('./routes/index');
+//登录
+var loginRouter = require('./routes/login');
+//注册
+var registerRouter = require('./routes/register');
+
+
 var usersRouter = require('./routes/users');
 //职位管理
-var departMent = require('./routes/departMent');
+var departMentRouter = require('./routes/departMent');
 
 var app = express();
 
@@ -27,10 +32,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json()); // 解析json请求
 app.use(express.urlencoded({ extended: false })) // 解析URL-encoded请求
 
-app.use('/', indexRouter);
+//登录
+app.use('/login', loginRouter);
+//注册
+app.use('/register', registerRouter);
+
+//获取验证码
 app.use('/getSms', usersRouter);
 //职位管理
-app.use('/department', departMent);
+app.use('/department', departMentRouter);
+
 
 
 
@@ -39,6 +50,7 @@ app.use('/department', departMent);
 // catch 404 and forward to error handler
 //应用级别全局中间件
 app.use(function (req, res, next) {
+  console.log(req.path)
   next(createError(404));
 });
 
