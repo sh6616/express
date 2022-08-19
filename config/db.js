@@ -95,6 +95,7 @@ class CustomDB {
         return new Promise(async (resolve, reject) => {
             try {
                 const deleteSql = `DELETE FROM ${table} WHERE ${where}`;
+                console.log(deleteSql)
                 let deleteResult = await this.query(deleteSql);
                 if (deleteResult.affectedRows === 0) {
                     reject(`DELETE ERROR: ${deleteResult.message}`, deleteResult);
