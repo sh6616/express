@@ -14,10 +14,8 @@ router.post('/add/', function (req, res, next) {
 });
 
 router.post('/getList/', function (req, res, next) {
-  console.log(req.body)
   if (req.body.value == '') {
     db.query({ sql: 'select * from department_add', datas: '' }).then(resT => {
-      console.log(resT)
       let Res = new Result(JSON.parse(JSON.stringify(resT)), '')
       Res.success()
       res.send(JSON.stringify(Res));
