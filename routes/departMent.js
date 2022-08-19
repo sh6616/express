@@ -31,8 +31,23 @@ router.post('/getList/', function (req, res, next) {
       console.log(err);
     });
   }
+});
 
-
+router.post('/delete/', function (req, res, next) {
+  console.log(req.body)
+  db.delete({ table: 'department_add', where: `id=${req.body.id}` }).then(resT => {
+    console.log(resT)
+    // let Res = new Result(JSON.parse(JSON.stringify(resT)), '')
+    // Res.success()
+    // res.send(JSON.stringify(Res));
+    if (resT.affectedRows == 1) {
+      let Res = new Result('', '删除成功')
+      Res.success()
+      res.send(JSON.stringify(Res));
+    }
+  }).catch(err => {
+    console.log(err);
+  });
 });
 
 module.exports = router;
