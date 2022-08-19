@@ -9,9 +9,7 @@ router.post('/', function (req, res, next) {
   db.query({ sql: `select * from user where username = '${req.body.username}'`, datas: '' }).then(resT => {
     let Res = new Result(JSON.parse(JSON.stringify(resT)),'该账号已注册')
     Res.fail()
-    console.log(Res)
     res.send(JSON.stringify(Res));
-
   }).catch(err => {
     db.insert({ table: 'user', datas: req.body }).then(resT => {
       if (resT.affectedRows == 1) {
