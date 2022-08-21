@@ -76,7 +76,7 @@ class CustomDB {
                 setData = setData.slice(0, -2);
                 const updateSql = `UPDATE ${table} SET ${setData} WHERE ${where}`;
                 let updateResult = await this.query(updateSql);
-                if (updateResult.changedRows === 0) {
+                if (updateResult.affectedRows === 0) {
                     reject(`UPDATE ERROR: ${updateResult.message}`, updateResult);
                 } else {
                     resolve(updateResult);
