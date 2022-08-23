@@ -5,10 +5,10 @@ class CustomDB {
     /**
      * config一些配置文件，例如主机、端口、用户、密码....
      */
-    constructor(config={}) {
+    constructor(config = {}) {
         this.config = config;
     }
-    
+
     /**
      * 执行sql
      */
@@ -27,8 +27,8 @@ class CustomDB {
                 connection.end(err => {
                     reject('DATABASE ERROR：close connection failed!')
                 });
-            });           
-        });   
+            });
+        });
     }
 
     /**
@@ -36,12 +36,12 @@ class CustomDB {
      * @param table
      * @param datas
      */
-    insert({table, datas}) {
-        return new Promise(async(resolve, reject) => {
+    insert({ table, datas }) {
+        return new Promise(async (resolve, reject) => {
             try {
                 let fields = ''; //字段名
                 let values = []; //字段值
-                for(let key in datas) {
+                for (let key in datas) {
                     fields += key + ','
                     values.push(datas[key]);
                 }
@@ -58,15 +58,15 @@ class CustomDB {
                 }
             } catch (error) {
                 reject(typeof error === 'object' ? `ABNORMAL PRGORAM：${error.message}` : error);
-            }            
+            }
         });
     }
 
     /**
      * 更新
      */
-    update({table, sets, where}) {
-        return new Promise(async(resolve, reject) => {
+    update({ table, sets, where }) {
+        return new Promise(async (resolve, reject) => {
             try {
                 let setData = '';
                 for (let key in sets) {
@@ -91,11 +91,10 @@ class CustomDB {
      * 删除
      * @param table
      */
-    delete({table, where}) {
+    delete({ table, where }) {
         return new Promise(async (resolve, reject) => {
             try {
                 const deleteSql = `DELETE FROM ${table} WHERE ${where}`;
-                console.log(deleteSql)
                 let deleteResult = await this.query(deleteSql);
                 if (deleteResult.affectedRows === 0) {
                     reject(`DELETE ERROR: ${deleteResult.message}`, deleteResult);
@@ -105,7 +104,7 @@ class CustomDB {
             } catch (error) {
                 reject && reject(typeof error === 'object' ? `ABNORMAL PRGORAM：${error.message}` : error);
             }
-        });       
+        });
     }
 }
 

@@ -36,7 +36,17 @@ router.post('/getList/', function (req, res, next) {
 });
 //删除
 router.post('/delete/', function (req, res, next) {
-  db.delete({ table: 'department', where: `id=${req.body.id}` }).then(resT => {
+  let sqlDelate = ''
+  if (req.body.id.length == undefined) {
+    sqlDelate = 'id=' + req.body.id
+  } else if (req.body.id.length > 1) {
+    let nums = ''
+    for (let i = 0; i < req.body.id.length; i++) {
+      nums += req.body.id[i] + ','
+    }
+    sqlDelate = 'id in (' + nums.substring(0, nums.length - 1) + ')'
+  }
+  db.delete({ table: 'department', where: sqlDelate }).then(resT => {
     if (resT.affectedRows == 1) {
       let Res = new Result('', '删除成功')
       Res.success()
@@ -53,7 +63,6 @@ router.post('/edit/', function (req, res, next) {
     delete reqData.key
   }
   db.update({ table: 'department', 'sets': reqData, where: `id=${reqData.id}` }).then(resT => {
-    console.log(resT)
     if (resT.affectedRows == 1) {
       let Res = new Result('', '操作成功')
       Res.success()
@@ -76,7 +85,6 @@ router.post('/Detailed/', function (req, res, next) {
 //禁启用
 router.post('/status/', function (req, res, next) {
   db.update({ table: 'department', 'sets': req.body, where: `id=${req.body.id}` }).then(resT => {
-    // console.log(resT)
     if (resT.affectedRows == 1) {
       let Res = new Result('', '操作成功')
       Res.success()
