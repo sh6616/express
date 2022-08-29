@@ -16,9 +16,19 @@ router.post('/add/', function (req, res, next) {
 //获取所有列表
 router.post('/getList/', function (req, res, next) {
   if (req.body.value == '') {
-    db.query({ sql: 'select * from department', datas: '' }).then(resT => {
+    //每页数量
+    let pageNumber = (Number(req.body.pageNumber) - 1 ) * Number(req.body.pageSize)
+    //当前页
+    let pageSize = Number(req.body.pageNumber) * Number(req.body.pageSize)
+    //数据总数量
+    let total = ''
+    db.query({ sql: `select * from department`, datas: '' }).then(resT => {
+        total = resT.length
+    })
+    db.query({ sql: `select * from department order by id limit ${pageNumber},${pageSize}`, datas: '' }).then(resT => {
       let Res = new Result(JSON.parse(JSON.stringify(resT)), '')
       Res.success()
+      Res.total = total
       res.send(JSON.stringify(Res));
     }).catch(err => {
       console.log(err);
