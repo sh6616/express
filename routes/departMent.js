@@ -36,8 +36,10 @@ router.post('/getList/', function (req, res, next) {
   } else {
     //条件查询单条
     db.query({ sql: `select * from department where name = '${req.body.value}'`, datas: '' }).then(resT => {
-      let Res = new Result(JSON.parse(JSON.stringify(resT)), '')
+      let parseObject = JSON.parse(JSON.stringify(resT))
+      let Res = new Result(parseObject, '')
       Res.success()
+      Res.total = parseObject.length
       res.send(JSON.stringify(Res));
     }).catch(err => {
       console.log(err);
@@ -46,6 +48,7 @@ router.post('/getList/', function (req, res, next) {
 });
 //删除
 router.post('/delete/', function (req, res, next) {
+  console.log(req.body)
   let sqlDelate = ''
   if (req.body.id.length == undefined) {
     sqlDelate = 'id=' + req.body.id
@@ -55,9 +58,10 @@ router.post('/delete/', function (req, res, next) {
       nums += req.body.id[i] + ','
     }
     sqlDelate = 'id in (' + nums.substring(0, nums.length - 1) + ')'
+    console.log(sqlDelate)
   }
   db.delete({ table: 'department', where: sqlDelate }).then(resT => {
-    if (resT.affectedRows == 1) {
+    if (resT.affectedRows != 0) {
       let Res = new Result('', '删除成功')
       Res.success()
       res.send(JSON.stringify(Res));
